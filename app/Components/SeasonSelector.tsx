@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { ChangeEvent, useEffect } from "react";
 import {
@@ -15,34 +16,35 @@ export default function SeasonSelector() {
     (state: RootState) => state.seasons.selectedSeason
   );
 
-  useEffect(() => {
-    const fetchSeasons = async () => {
-      try {
-        const response = await fetch(
-          "https://api-football-v1.p.rapidapi.com/v3/leagues/seasons",
-          {
-            method: "GET",
-            headers: {
-              "X-RapidAPI-Key": apiKey,
-              "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("HTTP status " + response.status);
+  const fetchSeasons = async () => {
+    try {
+      const response = await fetch(
+        "https://api-football-v1.p.rapidapi.com/v3/leagues/seasons",
+        {
+          method: "GET",
+          headers: {
+            "X-RapidAPI-Key": apiKey,
+            "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+          },
         }
+      );
 
-        const data = await response.json();
-        const allSeasonsData = data.response;
-
-        localStorage.setItem("seasons", JSON.stringify(allSeasonsData));
-
-        dispatch(setSeasons(allSeasonsData));
-      } catch (error) {
-        console.error(error);
+      if (!response.ok) {
+        throw new Error("HTTP status " + response.status);
       }
-    };
+
+      const data = await response.json();
+      const allSeasonsData = data.response;
+
+      localStorage.setItem("seasons", JSON.stringify(allSeasonsData));
+
+      dispatch(setSeasons(allSeasonsData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
     const storedSeasons = localStorage.getItem("seasons");
 
     if (storedSeasons) {
@@ -50,7 +52,7 @@ export default function SeasonSelector() {
     } else {
       fetchSeasons();
     }
-  }, [dispatch, apiKey, seasons, selectedSeason]);
+  }, [dispatch, apiKey]);
 
   const handleSeasonChange = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSelectedSeason(event.target.value));
