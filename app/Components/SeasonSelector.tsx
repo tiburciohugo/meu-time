@@ -16,6 +16,33 @@ export default function SeasonSelector() {
   );
 
   useEffect(() => {
+    const fetchSeasons = async () => {
+      try {
+        const response = await fetch(
+          "https://api-football-v1.p.rapidapi.com/v3/leagues/seasons",
+          {
+            method: "GET",
+            headers: {
+              "X-RapidAPI-Key": apiKey,
+              "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("HTTP status " + response.status);
+        }
+
+        const data = await response.json();
+        const allSeasonsData = data.response;
+
+        localStorage.setItem("seasons", JSON.stringify(allSeasonsData));
+
+        dispatch(setSeasons(allSeasonsData));
+      } catch (error) {
+        console.error(error);
+      }
+    };
     const storedSeasons = localStorage.getItem("seasons");
 
     if (storedSeasons) {
@@ -23,35 +50,7 @@ export default function SeasonSelector() {
     } else {
       fetchSeasons();
     }
-  }, [dispatch]);
-
-  const fetchSeasons = async () => {
-    try {
-      const response = await fetch(
-        "https://api-football-v1.p.rapidapi.com/v3/leagues/seasons",
-        {
-          method: "GET",
-          headers: {
-            "X-RapidAPI-Key": apiKey,
-            "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("HTTP status " + response.status);
-      }
-
-      const data = await response.json();
-      const allSeasonsData = data.response;
-
-      localStorage.setItem("seasons", JSON.stringify(allSeasonsData));
-
-      dispatch(setSeasons(allSeasonsData));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  }, [dispatch, apiKey, seasons, selectedSeason]);
 
   const handleSeasonChange = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSelectedSeason(event.target.value));

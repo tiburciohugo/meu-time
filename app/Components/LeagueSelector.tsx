@@ -51,7 +51,7 @@ export default function LeagueSelector() {
     if (selectedCountry && leagues.length === 0) {
       fetchLeagues().catch((error) => console.error(error));
     }
-  }, [selectedCountry, leagues.length, dispatch]);
+  }, [selectedCountry, leagues.length, dispatch, apiKey]);
 
   const handleLeagueChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const leagueId = Number(event.target.value);

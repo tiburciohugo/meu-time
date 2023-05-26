@@ -66,7 +66,7 @@ export default function CountrySelector() {
     } else {
       dispatch(setCountries(JSON.parse(storedCountries)));
     }
-  }, [dispatch]);
+  }, [dispatch, apiKey]);
 
   const handleCountryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const country = event.target.value;
