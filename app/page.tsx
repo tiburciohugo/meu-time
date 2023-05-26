@@ -105,7 +105,7 @@ export default function Login() {
 
                       {isLoading && (
                         <p className="text-sm text-blue-500">
-                          Checking API key...
+                          Checando API key...
                         </p>
                       )}
                     </div>
@@ -119,6 +119,16 @@ export default function Login() {
                       </button>
                     </div>
                   </div>
+                  <p className="mt-4 text-center text-sm font-semibold text-gray-600">
+                    Não tem uma API Key? Clique{" "}
+                    <a
+                      href="https://rapidapi.com/api-sports/api/api-football"
+                      target="_blank"
+                      className="text-blue-600 transition-all duration-200 hover:text-blue-500"
+                    >
+                      aqui
+                    </a>
+                  </p>
                 </form>
               </div>
             </div>
